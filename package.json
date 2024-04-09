@@ -1,6 +1,7 @@
 {
   "name": "ao_react",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@permaweb/aoconnect": "^0.0.51",
