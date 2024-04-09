@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// const { message, createDataItemSigner, connect, dryrun, result } = require('@permaweb/aoconnect');
+import { dryrun} from '@permaweb/aoconnect';
+import React, { useState, useEffect } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const Home = () => {
+    const [data, setData] = useState(null);
 
-export default App;
+    async function getDry() {
+        return await dryrun({
+            process: 'Fhm5tFTmN3EXBji6EngRhu1g22DgM7SGi7uQBopZMlc',
+            tags: [{ name: 'Action', value: 'Eval' }],
+            data: "require('json').encode(myName)",
+            Owner: 'b8FjTeLN55rWw9M-Vt6fpUhD1OMsXbdD8g2ta2L9Woo',
+        });
+    }
+
+    useEffect(() => {
+        getDry().then((result) => {
+            setData(result.Output.data.output);
+        });
+    }, []);
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <main>
+            <div>
+                <h1>首页</h1>
+                {data && (
+                    <div>
+                        <p>{data}</p>
+                    </div>
+                )}
+            </div>
+            <button onClick={() => getDry()}>Dry</button>
+        </main>
+    );
+};
+
+export default Home;
